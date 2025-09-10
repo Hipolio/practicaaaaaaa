@@ -43,11 +43,11 @@ def pusherPadrinos():
 def pusherCargo():
     import pusher
     pusher_client = pusher.Pusher(
-        app_id="2046006",
-        key="e57a8ad0a9dc2e83d9a2",
-        secret="f54509be4e62f829f280",
-        cluster="us2",
-        ssl=True
+       app_id='2049018',
+       key='57413b779fac9cbb46c7',
+       secret='836dc20be56b5cabbfe9',
+       cluster='us2',
+       ssl=True
     )
     pusher_client.trigger("canalCargo", "eventoCargo", {"message": "Nuevo cargo"})
     return make_response(jsonify({}))
@@ -225,6 +225,7 @@ def eliminarCargo():
     con.commit()
     con.close()
     return make_response(jsonify({"succes": True}))
+
 
 
 
