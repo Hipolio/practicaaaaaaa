@@ -179,7 +179,7 @@ app.controller("cargoCtrl", function ($scope, $http) {
     
     Pusher.logToConsole = true
 
-    var pusher = new Pusher("e57a8ad0a9dc2e83d9a2", {
+    var pusher = new Pusher("57413b779fac9cbb46c7", {
       cluster: "us2"
     })
 
@@ -230,6 +230,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
