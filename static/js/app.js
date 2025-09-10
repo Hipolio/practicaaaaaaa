@@ -26,8 +26,8 @@ app.config(function ($routeProvider, $locationProvider) {
         controller: "decoracionesCtrl"
     })
     .when("/cargos", {
-        templateUrl: "/cargos",
-        controller: "cargosCtrl"
+        templateUrl: "/cargo",
+        controller: "cargoCtrl"
     })
     .otherwise({
         redirectTo: "/"
@@ -168,14 +168,14 @@ app.controller("decoracionesCtrl", function ($scope, $http) {
 })
 
 // === NUEVO CONTROLADOR PARA CARGOS ===
-app.controller("cargosCtrl", function ($scope, $http) {
+app.controller("cargoCtrl", function ($scope, $http) {
     function buscarCargos() {
         $.get("/tbodyCargos", function (trsHTML) {
             $("#tbodyCargos").html(trsHTML)
         })
     }
 
-    buscarCargos()
+    buscarCargo()
     
     Pusher.logToConsole = true
 
@@ -183,16 +183,16 @@ app.controller("cargosCtrl", function ($scope, $http) {
       cluster: "us2"
     })
 
-    var channel = pusher.subscribe("canalCargos")
-    channel.bind("eventoCargos", function(data) {
-        buscarCargos()
+    var channel = pusher.subscribe("canalCargo")
+    channel.bind("eventoCargo", function(data) {
+        buscarCargo()
     })
 
     $(document).on("submit", "#frmCargo", function (event) {
         event.preventDefault()
 
         $.post("/cargos", {
-            idCargos: "",
+            idCargo: "",
             descripcion: $("#txtDescripcion").val(),
             monto:       $("#txtMonto").val(),
             fecha:       $("#txtFecha").val(),
@@ -201,14 +201,14 @@ app.controller("cargosCtrl", function ($scope, $http) {
     })
 
     $(document).off("click", ".btn-eliminar").on("click", ".btn-eliminar", function () {
-        const id = $(this).data("idcargos")
+        const id = $(this).data("idcargo")
 
         if (!confirm("¿Seguro que deseas eliminar este cargo?")) {
             return
         }
 
         $.post("/cargos/eliminar", { idCargos: id }, function () {
-            buscarCargos()
+            buscarCargo()
         }).fail(function(xhr) {
             alert("Error al eliminar: " + xhr.responseText)
         })
@@ -230,6 +230,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
