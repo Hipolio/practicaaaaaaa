@@ -218,13 +218,14 @@ def eliminarCargo():
     if not con.is_connected():
         con.reconnect()
     idCargo = request.form["idCargos"]
-    cursor = con.cursor(dictionary=True)
+    cursor = con.cursor()
     sql    = "DELETE FROM cargos WHERE idCargos = %s"
-    val    = (idCargo, )
+    val    = (idCargo)
     cursor.execute(sql, val)
     con.commit()
     con.close()
     return make_response(jsonify({"succes": True}))
+
 
 
 
