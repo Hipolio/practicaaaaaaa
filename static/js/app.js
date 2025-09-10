@@ -200,7 +200,7 @@ app.controller("cargosCtrl", function ($scope, $http) {
         })
     })
 
-    $(document).off("click", ".btn-eliminar-cargo").on("click", ".btn-eliminar-cargo", function () {
+    $(document).off("click", ".btn-eliminar").on("click", ".btn-eliminar", function () {
         const id = $(this).data("idcargos")
 
         if (!confirm("¿Seguro que deseas eliminar este cargo?")) {
@@ -230,4 +230,5 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
