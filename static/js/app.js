@@ -207,7 +207,7 @@ app.controller("cargosCtrl", function ($scope, $http) {
             return
         }
 
-        $.post("/cargo/eliminar", { idCargos: id }, function () {
+        $.post("/cargos/eliminar", { idCargos: id }, function () {
             buscarCargos()
         }).fail(function(xhr) {
             alert("Error al eliminar: " + xhr.responseText)
@@ -230,5 +230,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
