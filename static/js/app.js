@@ -25,7 +25,7 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/decoraciones",
         controller: "decoracionesCtrl"
     })
-    .when("/cargos", {
+    .when("/cargo", {
         templateUrl: "/cargo",
         controller: "cargoCtrl"
     })
@@ -169,9 +169,9 @@ app.controller("decoracionesCtrl", function ($scope, $http) {
 
 // === NUEVO CONTROLADOR PARA CARGOS ===
 app.controller("cargoCtrl", function ($scope, $http) {
-    function buscarCargos() {
-        $.get("/tbodyCargos", function (trsHTML) {
-            $("#tbodyCargos").html(trsHTML)
+    function buscarCargo() {
+        $.get("/tbodyCargo", function (trsHTML) {
+            $("#tbodyCargo").html(trsHTML)
         })
     }
 
@@ -191,7 +191,7 @@ app.controller("cargoCtrl", function ($scope, $http) {
     $(document).on("submit", "#frmCargo", function (event) {
         event.preventDefault()
 
-        $.post("/cargos", {
+        $.post("/cargo", {
             idCargo: "",
             descripcion: $("#txtDescripcion").val(),
             monto:       $("#txtMonto").val(),
@@ -207,7 +207,7 @@ app.controller("cargoCtrl", function ($scope, $http) {
             return
         }
 
-        $.post("/cargos/eliminar", { idCargos: id }, function () {
+        $.post("/cargo/eliminar", { idCargo: id }, function () {
             buscarCargo()
         }).fail(function(xhr) {
             alert("Error al eliminar: " + xhr.responseText)
@@ -230,6 +230,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
