@@ -1,12 +1,12 @@
 {% for cargo in cargos %}
 <tr>
-    <td>{{ cargos.idCargos }}</td>
-    <td>{{ cargos.descripcion }}</td>
-    <td>{{ cargos.monto }}</td>
+    <td>{{ cargo.idCargos }}</td>
+    <td>{{ cargo.descripcion }}</td>
+    <td>{{ cargo.monto }}</td>
     <td>{{ cargo.fecha }}</td>
     <td>{{ cargo.idMascotas }}</td>
     <td>
-        <button class="btn btn-info btn-editar" data-idCargo="{{ cargo.idCargos }}">Editar</button>
+        <button class="btn btn-info btn-editar" data-idCargos="{{ cargo.idCargos }}">Editar</button>
     </td>
     <td>
         <button class="btn btn-info btn-eliminar" data-idCargos="{{ cargo.idCargos }}">Eliminar</button>
