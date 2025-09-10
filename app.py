@@ -217,11 +217,12 @@ def guardarCargo():
 def eliminarCargo():
     if not con.is_connected():
         con.reconnect()
-    idCargos = request.form["idCargos"]
+    idCargo = request.form["idCargos"]
     cursor = con.cursor()
     sql    = "DELETE FROM cargos WHERE idCargos = %s"
-    cursor.execute(sql, (idCargos,))
+    cursor.execute(sql, (idCargo,))
     con.commit()
     con.close()
     return make_response(jsonify({}))
+
 
