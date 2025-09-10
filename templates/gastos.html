@@ -1,85 +1,38 @@
-{% extends "index.html" %}
+<form id="frmCargo" method="post">
+    <div class="mb-1">
+        <label for="txtDescripcion">Descripción</label>
+        <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion">
+    </div>
+    <div class="mb-1">
+        <label for="txtMonto">Monto</label>
+        <input type="number" class="form-control" id="txtMonto" name="txtMonto" step="0.01">
+    </div>
+    <div class="mb-1">
+        <label for="txtFecha">Fecha</label>
+        <input type="date" class="form-control" id="txtFecha" name="txtFecha">
+    </div>
+    <div class="mb-1">
+        <label for="txtIdMascota">ID Mascota</label>
+        <input type="number" class="form-control" id="txtIdMascota" name="txtIdMascota">
+    </div>
+    <div class="mb-1 text-end">
+        <button class="btn btn-primary">Guardar</button>
+    </div>
+</form>
 
-{% block content %}
-<div class="container mt-4">
-    <h2 class="text-center">Gestión de Gastos</h2>
-
-    <!-- Botón para abrir modal -->
-    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalGasto">
-        Agregar Gasto
-    </button>
-
-    <!-- Tabla de gastos -->
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
+<div class="table-responsive">
+    <table class="table table-sm">
+        <thead class="table-active">
             <tr>
-                <th>ID</th>
+                <th>Id</th>
                 <th>Descripción</th>
                 <th>Monto</th>
                 <th>Fecha</th>
-                <th>Mascota Asociada</th>
-                <th>Acciones</th>
+                <th>ID Mascota</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
-        <tbody id="tbodyGastos">
-            {% for gasto in gastos %}
-            <tr>
-                <td>{{ gasto.idGasto }}</td>
-                <td>{{ gasto.descripcion }}</td>
-                <td>${{ gasto.monto }}</td>
-                <td>{{ gasto.fecha }}</td>
-                <td>
-                    {% if gasto.idMascota %}
-                        Mascota ID: {{ gasto.idMascota }}
-                    {% else %}
-                        General
-                    {% endif %}
-                </td>
-                <td>
-                    <button class="btn btn-warning btn-sm" onclick="editarGasto({{ gasto.idGasto }}, '{{ gasto.descripcion }}', {{ gasto.monto }}, '{{ gasto.fecha }}', '{{ gasto.idMascota }}')">Editar</button>
-                    <button class="btn btn-danger btn-sm" onclick="eliminarGasto({{ gasto.idGasto }})">Eliminar</button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tbody id="tbodyCargos"></tbody>
     </table>
 </div>
-
-<!-- Modal para agregar/editar gasto -->
-<div class="modal fade" id="modalGasto" tabindex="-1" aria-labelledby="modalGastoLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form id="formGasto" method="POST" action="/gastos/guardar">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalGastoLabel">Nuevo Gasto</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" id="idGasto" name="idGasto">
-          <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripción</label>
-            <input type="text" class="form-control" id="descripcion" name="descripcion" required>
-          </div>
-          <div class="mb-3">
-            <label for="monto" class="form-label">Monto</label>
-            <input type="number" class="form-control" id="monto" name="monto" required>
-          </div>
-          <div class="mb-3">
-            <label for="fecha" class="form-label">Fecha</label>
-            <input type="date" class="form-control" id="fecha" name="fecha" required>
-          </div>
-          <div class="mb-3">
-            <label for="idMascota" class="form-label">Mascota (opcional)</label>
-            <input type="number" class="form-control" id="idMascota" name="idMascota" placeholder="ID de la mascota o dejar vacío">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Guardar</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-{% endblock %}
