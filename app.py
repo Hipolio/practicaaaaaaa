@@ -5,13 +5,11 @@
 # pip install -r requirements.txt
 
 from flask import Flask
-
 from flask import render_template
 from flask import request
 from flask import jsonify, make_response
 
 import mysql.connector
-
 import datetime
 import pytz
 
@@ -27,42 +25,51 @@ con = mysql.connector.connect(
 app = Flask(__name__)
 CORS(app)
 
+# ========================
+# FUNCIONES PUSHER
+# ========================
 def pusherPadrinos():
     import pusher
-    
     pusher_client = pusher.Pusher(
-      app_id="2046006",
-      key="fd4071018e972df38f9a",
-      secret="f54509be4e62f829f280",
-      cluster="us2",
-      ssl=True
+        app_id="2046006",
+        key="fd4071018e972df38f9a",
+        secret="f54509be4e62f829f280",
+        cluster="us2",
+        ssl=True
     )
-    
     pusher_client.trigger("hardy-drylands-461", "eventoPadrinos", {"message": "Hola Mundo!"})
     return make_response(jsonify({}))
 
+def pusherCargos():
+    import pusher
+    pusher_client = pusher.Pusher(
+        app_id="2046006",
+        key="e57a8ad0a9dc2e83d9a2",
+        secret="f54509be4e62f829f280",
+        cluster="us2",
+        ssl=True
+    )
+    pusher_client.trigger("canalCargos", "eventoCargos", {"message": "Nuevo cargo"})
+    return make_response(jsonify({}))
+
+# ========================
+# RUTAS GENERALES
+# ========================
 @app.route("/")
 def index():
     if not con.is_connected():
         con.reconnect()
-
     con.close()
-
     return render_template("index.html")
 
 @app.route("/app")
 def app2():
     if not con.is_connected():
         con.reconnect()
-
     con.close()
-
     return render_template("login.html")
-    # return "<h5>Hola, soy la view app</h5>"
 
 @app.route("/iniciarSesion", methods=["POST"])
-# Usar cuando solo se quiera usar CORS en rutas específicas
-# @cross_origin()
 def iniciarSesion():
     if not con.is_connected():
         con.reconnect()
@@ -74,7 +81,6 @@ def iniciarSesion():
     sql    = """
     SELECT Id_Usuario
     FROM usuarios
-
     WHERE Nombre_Usuario = %s
     AND Contrasena = %s
     """
@@ -86,6 +92,9 @@ def iniciarSesion():
 
     return make_response(jsonify(registros))
 
+# ========================
+# RUTAS PADRINOS
+# ========================
 @app.route("/padrinos")
 def padrinos():
     return render_template("padrinos.html")
@@ -97,108 +106,16 @@ def tbodyPadrinos():
 
     cursor = con.cursor(dictionary=True)
     sql    = """
-    SELECT idPadrino,
-           nombrePadrino,
-           sexo,
-           telefono,
-           correoElectronico
-
+    SELECT idPadrino, nombrePadrino, sexo, telefono, correoElectronico
     FROM padrinos
-
     ORDER BY idPadrino DESC
-
     LIMIT 10 OFFSET 0
     """
-
     cursor.execute(sql)
     registros = cursor.fetchall()
-
-    # Si manejas fechas y horas
-    """
-    for registro in registros:
-        fecha_hora = registro["Fecha_Hora"]
-
-        registro["Fecha_Hora"] = fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
-        registro["Fecha"]      = fecha_hora.strftime("%d/%m/%Y")
-        registro["Hora"]       = fecha_hora.strftime("%H:%M:%S")
-    """
-
     return render_template("tbodyPadrinos.html", padrinos=registros)
 
-@app.route("/productos/ingredientes/<int:idPadrino>")
-def productosIngredientes(idPadrino):
-    if not con.is_connected():
-        con.reconnect()
-
-    cursor = con.cursor(dictionary=True)
-    sql    = """
-    SELECT productos.Nombre_Producto, ingredientes.*, productos_ingredientes.Cantidad FROM productos_ingredientes
-    INNER JOIN productos ON productos.Id_Producto = productos_ingredientes.Id_Producto
-    INNER JOIN ingredientes ON ingredientes.Id_Ingrediente = productos_ingredientes.Id_Ingrediente
-    WHERE productos_ingredientes.Id_Producto = %s
-    ORDER BY productos.Nombre_Producto
-    """
-
-    cursor.execute(sql, (idPadrino, ))
-    registros = cursor.fetchall()
-
-    return render_template("modal.html", productosIngredientes=registros)
-
-@app.route("/padrinos/buscar", methods=["GET"])
-def buscarPadrinos():
-    if not con.is_connected():
-        con.reconnect()
-
-    args     = request.args
-    busqueda = args["busqueda"]
-    busqueda = f"%{busqueda}%"
-    
-    cursor = con.cursor(dictionary=True)
-    sql    = """
-    SELECT idPadrino,
-           nombrePadrino,
-           sexo,
-           telefono,
-           correoElectronico
-
-    FROM padrinos
-
-    WHERE nombrePadrino LIKE %s
-    OR    telefono          LIKE %s
-    OR    correoElectronico     LIKE %s
-
-    ORDER BY idPadrino DESC
-    
-    LIMIT 10 OFFSET 0
-    """
-    val    = (busqueda, busqueda, busqueda)
-
-    try:
-        cursor.execute(sql, val)
-        registros = cursor.fetchall()
-
-        # Si manejas fechas y horas
-        """
-        for registro in registros:
-            fecha_hora = registro["Fecha_Hora"]
-
-            registro["Fecha_Hora"] = fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
-            registro["Fecha"]      = fecha_hora.strftime("%d/%m/%Y")
-            registro["Hora"]       = fecha_hora.strftime("%H:%M:%S")
-        """
-
-    except mysql.connector.errors.ProgrammingError as error:
-        print(f"Ocurrió un error de programación en MySQL: {error}")
-        registros = []
-
-    finally:
-        con.close()
-
-    return make_response(jsonify(registros))
-
 @app.route("/padrino", methods=["POST"])
-# Usar cuando solo se quiera usar CORS en rutas específicas
-# @cross_origin()
 def guardarPadrinos():
     if not con.is_connected():
         con.reconnect()
@@ -208,74 +125,102 @@ def guardarPadrinos():
     sexo               = request.form["sexo"]
     telefono           = request.form["telefono"]
     correoElectronico  = request.form["correoElectronico"]
-    # fechahora   = datetime.datetime.now(pytz.timezone("America/Matamoros"))
     
     cursor = con.cursor()
-
     if idPadrino:
         sql = """
         UPDATE padrinos
-
-        SET nombrePadrino     = %s,
-            sexo              = %s,
-            telefono          = %s,
-            correoElectronico = %s
-
+        SET nombrePadrino = %s, sexo = %s, telefono = %s, correoElectronico = %s
         WHERE idPadrino = %s
         """
         val = (nombrePadrino, sexo, telefono, correoElectronico, idPadrino)
     else:
         sql = """
         INSERT INTO padrinos (nombrePadrino, sexo, telefono, correoElectronico)
-                    VALUES    (%s,          %s,      %s,    %s)
+        VALUES (%s, %s, %s, %s)
         """
-        val =                 (nombrePadrino, sexo, telefono, correoElectronico)
+        val = (nombrePadrino, sexo, telefono, correoElectronico)
     
     cursor.execute(sql, val)
     con.commit()
     con.close()
-
     pusherPadrinos()
-    
     return make_response(jsonify({}))
-
-@app.route("/padrino/<int:idPadrino>")
-def editarPadrino(idPadrino):
-    if not con.is_connected():
-        con.reconnect()
-
-    cursor = con.cursor(dictionary=True)
-    sql    = """
-    SELECT idPadrino, nombrePadrino, sexo, telefono, correoElectronico
-
-    FROM padrinos
-
-    WHERE idPadrino = %s
-    """
-    val    = (idPadrino,)
-
-    cursor.execute(sql, val)
-    registros = cursor.fetchall()
-    con.close()
-
-    return make_response(jsonify(registros))
 
 @app.route("/padrino/eliminar", methods=["POST"])
 def eliminarPadrino():
     if not con.is_connected():
         con.reconnect()
-
     idPadrino = request.form["idPadrino"]
+    cursor = con.cursor()
+    sql    = "DELETE FROM padrinos WHERE idPadrino = %s"
+    cursor.execute(sql, (idPadrino,))
+    con.commit()
+    con.close()
+    return make_response(jsonify({}))
 
+# ========================
+# RUTAS CARGOS
+# ========================
+@app.route("/cargos")
+def cargos():
+    return render_template("cargos.html")
+
+@app.route("/tbodyCargos")
+def tbodyCargos():
+    if not con.is_connected():
+        con.reconnect()
     cursor = con.cursor(dictionary=True)
     sql    = """
-    DELETE FROM padrinos
-    WHERE idPadrino = %s
+    SELECT idCargos, descripcion, monto, fecha, idMascotas
+    FROM cargos
+    ORDER BY idCargos DESC
+    LIMIT 10 OFFSET 0
     """
-    val    = (idPadrino,)
+    cursor.execute(sql)
+    registros = cursor.fetchall()
+    return render_template("tbodyCargos.html", cargos=registros)
+
+@app.route("/cargo", methods=["POST"])
+def guardarCargo():
+    if not con.is_connected():
+        con.reconnect()
+
+    idCargos    = request.form["idCargos"]
+    descripcion = request.form["descripcion"]
+    monto       = request.form["monto"]
+    fecha       = request.form["fecha"]
+    idMascotas  = request.form["idMascotas"]
+
+    cursor = con.cursor()
+    if idCargos:
+        sql = """
+        UPDATE cargos
+        SET descripcion = %s, monto = %s, fecha = %s, idMascotas = %s
+        WHERE idCargos = %s
+        """
+        val = (descripcion, monto, fecha, idMascotas, idCargos)
+    else:
+        sql = """
+        INSERT INTO cargos (descripcion, monto, fecha, idMascotas)
+        VALUES (%s, %s, %s, %s)
+        """
+        val = (descripcion, monto, fecha, idMascotas)
 
     cursor.execute(sql, val)
     con.commit()
     con.close()
+    pusherCargos()
+    return make_response(jsonify({}))
 
+@app.route("/cargo/eliminar", methods=["POST"])
+def eliminarCargo():
+    if not con.is_connected():
+        con.reconnect()
+    idCargos = request.form["idCargos"]
+    cursor = con.cursor()
+    sql    = "DELETE FROM cargos WHERE idCargos = %s"
+    cursor.execute(sql, (idCargos,))
+    con.commit()
+    con.close()
     return make_response(jsonify({}))
