@@ -181,7 +181,7 @@ def tbodyCargos():
     registros = cursor.fetchall()
     return render_template("tbodyCargos.html", cargos=registros)
 
-@app.route("/cargo", methods=["POST"])
+@app.route("/cargos", methods=["POST"])
 def guardarCargo():
     if not con.is_connected():
         con.reconnect()
@@ -213,7 +213,7 @@ def guardarCargo():
     pusherCargos()
     return make_response(jsonify({}))
 
-@app.route("/cargo/eliminar", methods=["POST"])
+@app.route("/cargos/eliminar", methods=["POST"])
 def eliminarCargo():
     if not con.is_connected():
         con.reconnect()
@@ -224,3 +224,4 @@ def eliminarCargo():
     con.commit()
     con.close()
     return make_response(jsonify({}))
+
