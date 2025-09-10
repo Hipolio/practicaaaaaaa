@@ -40,7 +40,7 @@ def pusherPadrinos():
     pusher_client.trigger("hardy-drylands-461", "eventoPadrinos", {"message": "Hola Mundo!"})
     return make_response(jsonify({}))
 
-def pusherCargos():
+def pusherCargo():
     import pusher
     pusher_client = pusher.Pusher(
         app_id="2046006",
@@ -49,7 +49,7 @@ def pusherCargos():
         cluster="us2",
         ssl=True
     )
-    pusher_client.trigger("canalCargos", "eventoCargos", {"message": "Nuevo cargo"})
+    pusher_client.trigger("canalCargo", "eventoCargo", {"message": "Nuevo cargo"})
     return make_response(jsonify({}))
 
 # ========================
@@ -163,7 +163,7 @@ def eliminarPadrino():
 # RUTAS CARGOS
 # ========================
 @app.route("/cargos")
-def cargos():
+def cargo():
     return render_template("cargos.html")
 
 @app.route("/tbodyCargos")
@@ -172,9 +172,9 @@ def tbodyCargos():
         con.reconnect()
     cursor = con.cursor(dictionary=True)
     sql    = """
-    SELECT idCargos, descripcion, monto, fecha, idMascotas
-    FROM cargos
-    ORDER BY idCargos DESC
+    SELECT idCargo, descripcion, monto, fecha, idMascotas
+    FROM cargo
+    ORDER BY idCargo DESC
     LIMIT 10 OFFSET 0
     """
     cursor.execute(sql)
@@ -186,23 +186,23 @@ def guardarCargo():
     if not con.is_connected():
         con.reconnect()
 
-    idCargos    = request.form["idCargos"]
+    idCargo    = request.form["idCargo"]
     descripcion = request.form["descripcion"]
     monto       = request.form["monto"]
     fecha       = request.form["fecha"]
     idMascotas  = request.form["idMascotas"]
 
     cursor = con.cursor()
-    if idCargos:
+    if idCargo:
         sql = """
-        UPDATE cargos
+        UPDATE cargo
         SET descripcion = %s, monto = %s, fecha = %s, idMascotas = %s
-        WHERE idCargos = %s
+        WHERE idCargo = %s
         """
-        val = (descripcion, monto, fecha, idMascotas, idCargos)
+        val = (descripcion, monto, fecha, idMascotas, idCargo)
     else:
         sql = """
-        INSERT INTO cargos (descripcion, monto, fecha, idMascotas)
+        INSERT INTO cargo (descripcion, monto, fecha, idMascotas)
         VALUES (%s, %s, %s, %s)
         """
         val = (descripcion, monto, fecha, idMascotas)
@@ -210,21 +210,22 @@ def guardarCargo():
     cursor.execute(sql, val)
     con.commit()
     con.close()
-    pusherCargos()
+    pusherCargo()
     return make_response(jsonify({}))
 
 @app.route("/cargos/eliminar", methods=["POST"])
 def eliminarCargo():
     if not con.is_connected():
         con.reconnect()
-    idCargo = request.form["idCargos"]
+    idCargo = request.form["idCargo"]
     cursor = con.cursor()
-    sql    = "DELETE FROM cargos WHERE idCargos = %s"
+    sql    = "DELETE FROM cargo WHERE idCargo = %s"
     val    = (idCargo)
     cursor.execute(sql, val)
     con.commit()
     con.close()
     return make_response(jsonify({"succes": True}))
+
 
 
 
