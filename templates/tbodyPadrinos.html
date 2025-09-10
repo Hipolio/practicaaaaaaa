@@ -1,0 +1,11 @@
+{% for padrino in padrinos %}
+<tr>
+    <td>{{ padrino.idPadrino }}</td>
+    <td>{{ padrino.nombrePadrino }}</td>
+    <td>{{ padrino.sexo }}</td>
+    <td>{{ padrino.telefono }}</td>
+    <th>{{ padrino.correoElectronico }}</th>
+    <td><button class="btn btn-info btn-editar" data-idPadrino="{{ padrino.idPadrino }}">Editar</button></td>
+    <td><button class="btn btn-info btn-eliminar" data-idPadrino="{{ padrino.idPadrino }}">Eliminar</button></td>
+</tr>
+{% endfor %}
