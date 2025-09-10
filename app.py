@@ -162,12 +162,12 @@ def eliminarPadrino():
 # ========================
 # RUTAS CARGOS
 # ========================
-@app.route("/cargos")
+@app.route("/cargo")
 def cargo():
-    return render_template("cargos.html")
+    return render_template("cargo.html")
 
-@app.route("/tbodyCargos")
-def tbodyCargos():
+@app.route("/tbodyCargo")
+def tbodyCargo():
     if not con.is_connected():
         con.reconnect()
     cursor = con.cursor(dictionary=True)
@@ -179,9 +179,9 @@ def tbodyCargos():
     """
     cursor.execute(sql)
     registros = cursor.fetchall()
-    return render_template("tbodyCargos.html", cargos=registros)
+    return render_template("tbodyCargo.html", cargo=registros)
 
-@app.route("/cargos", methods=["POST"])
+@app.route("/cargo", methods=["POST"])
 def guardarCargo():
     if not con.is_connected():
         con.reconnect()
@@ -213,7 +213,7 @@ def guardarCargo():
     pusherCargo()
     return make_response(jsonify({}))
 
-@app.route("/cargos/eliminar", methods=["POST"])
+@app.route("/cargo/eliminar", methods=["POST"])
 def eliminarCargo():
     if not con.is_connected():
         con.reconnect()
@@ -225,6 +225,7 @@ def eliminarCargo():
     con.commit()
     con.close()
     return make_response(jsonify({"succes": True}))
+
 
 
 
