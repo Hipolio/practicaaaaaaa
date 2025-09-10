@@ -201,13 +201,13 @@ app.controller("cargosCtrl", function ($scope, $http) {
     })
 
     $(document).off("click", ".btn-eliminar").on("click", ".btn-eliminar", function () {
-        const id = $(this).data("idcargos")
+        const id = $(this).data("idcargo")
 
         if (!confirm("¿Seguro que deseas eliminar este cargo?")) {
             return
         }
 
-        $.post("/cargos/eliminar", { idCargos: id }, function () {
+        $.post("/cargos/eliminar", { idCargo: id }, function () {
             buscarCargos()
         }).fail(function(xhr) {
             alert("Error al eliminar: " + xhr.responseText)
@@ -230,6 +230,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
