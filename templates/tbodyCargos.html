@@ -1,15 +1,15 @@
 {% for cargo in cargos %}
 <tr>
-    <td>{{ cargo.idCargos }}</td>
-    <td>{{ cargo.descripcion }}</td>
-    <td>{{ cargo.monto }}</td>
-    <td>{{ cargo.fecha }}</td>
-    <td>{{ cargo.idMascotas }}</td>
+    <td>{{ cargos.idCargos }}</td>
+    <td>{{ cargos.descripcion }}</td>
+    <td>{{ cargos.monto }}</td>
+    <td>{{ cargos.fecha }}</td>
+    <td>{{ cargos.idMascotas }}</td>
     <td>
-        <button class="btn btn-info btn-editar" data-idCargos="{{ cargo.idCargos }}">Editar</button>
+        <button class="btn btn-info btn-editar" data-idCargos="{{ cargos.idCargos }}">Editar</button>
     </td>
     <td>
-        <button class="btn btn-info btn-eliminar" data-idCargos="{{ cargo.idCargos }}">Eliminar</button>
+        <button class="btn btn-info btn-eliminar" data-idCargos="{{ cargos.idCargos }}">Eliminar</button>
     </td>
 </tr>
 {% endfor %}
