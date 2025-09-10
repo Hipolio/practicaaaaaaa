@@ -191,7 +191,7 @@ app.controller("cargosCtrl", function ($scope, $http) {
     $(document).on("submit", "#frmCargo", function (event) {
         event.preventDefault()
 
-        $.post("/cargo", {
+        $.post("/cargos", {
             idCargos: "",
             descripcion: $("#txtDescripcion").val(),
             monto:       $("#txtMonto").val(),
@@ -201,7 +201,7 @@ app.controller("cargosCtrl", function ($scope, $http) {
     })
 
     $(document).off("click", ".btn-eliminar-cargo").on("click", ".btn-eliminar-cargo", function () {
-        const id = $(this).data("idcargo")
+        const id = $(this).data("idcargos")
 
         if (!confirm("¿Seguro que deseas eliminar este cargo?")) {
             return
@@ -230,3 +230,4 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
