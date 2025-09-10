@@ -21,17 +21,14 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/padrinos",
         controller: "padrinosCtrl"
     })
-
-
-
     .when("/decoraciones", {
         templateUrl: "/decoraciones",
         controller: "decoracionesCtrl"
     })
-
-
-
-
+    .when("/cargos", {
+        templateUrl: "/cargos",
+        controller: "cargosCtrl"
+    })
     .otherwise({
         redirectTo: "/"
     })
@@ -108,7 +105,6 @@ app.controller("padrinosCtrl", function ($scope, $http) {
 
     var channel = pusher.subscribe("hardy-drylands-461")
     channel.bind("eventoPadrinos", function(data) {
-        // alert(JSON.stringify(data))
         buscarPadrinos()
     })
 
@@ -137,21 +133,7 @@ app.controller("padrinosCtrl", function ($scope, $http) {
             alert("Error al eliminar: " + xhr.responseText)
         })
     })
-
-    $(document).on("click", ".btn-ingredientes", function (event) {
-        const id = $(this).data("id")
-
-        $.get(`/productos/ingredientes/${id}`, function (html) {
-            modal(html, "Ingredientes", [
-                {html: "Aceptar", class: "btn btn-secondary", fun: function (event) {
-                    closeModal()
-                }}
-            ])
-        })
-    })
 })
-
-
 
 app.controller("decoracionesCtrl", function ($scope, $http) {
     function buscarDecoraciones() {
@@ -159,10 +141,9 @@ app.controller("decoracionesCtrl", function ($scope, $http) {
             $("#tbodyDecoraciones").html(trsHTML)
         })
     }
-    //hola
+
     buscarDecoraciones()
     
-    // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true
 
     var pusher = new Pusher("e57a8ad0a9dc2e83d9a2", {
@@ -171,7 +152,6 @@ app.controller("decoracionesCtrl", function ($scope, $http) {
 
     var channel = pusher.subscribe("canalDecoraciones")
     channel.bind("eventoDecoraciones", function(data) {
-        // alert(JSON.stringify(data))
         buscarDecoraciones()
     })
 
@@ -187,7 +167,53 @@ app.controller("decoracionesCtrl", function ($scope, $http) {
     })
 })
 
+// === NUEVO CONTROLADOR PARA CARGOS ===
+app.controller("cargosCtrl", function ($scope, $http) {
+    function buscarCargos() {
+        $.get("/tbodyCargos", function (trsHTML) {
+            $("#tbodyCargos").html(trsHTML)
+        })
+    }
 
+    buscarCargos()
+    
+    Pusher.logToConsole = true
+
+    var pusher = new Pusher("e57a8ad0a9dc2e83d9a2", {
+      cluster: "us2"
+    })
+
+    var channel = pusher.subscribe("canalCargos")
+    channel.bind("eventoCargos", function(data) {
+        buscarCargos()
+    })
+
+    $(document).on("submit", "#frmCargo", function (event) {
+        event.preventDefault()
+
+        $.post("/cargo", {
+            idCargos: "",
+            descripcion: $("#txtDescripcion").val(),
+            monto:       $("#txtMonto").val(),
+            fecha:       $("#txtFecha").val(),
+            idMascotas:  $("#txtIdMascota").val(),
+        })
+    })
+
+    $(document).off("click", ".btn-eliminar-cargo").on("click", ".btn-eliminar-cargo", function () {
+        const id = $(this).data("idcargo")
+
+        if (!confirm("¿Seguro que deseas eliminar este cargo?")) {
+            return
+        }
+
+        $.post("/cargo/eliminar", { idCargos: id }, function () {
+            buscarCargos()
+        }).fail(function(xhr) {
+            alert("Error al eliminar: " + xhr.responseText)
+        })
+    })
+})
 
 const DateTime = luxon.DateTime
 let lxFechaHora
@@ -196,12 +222,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const configFechaHora = {
         locale: "es",
         weekNumbers: true,
-        // enableTime: true,
         minuteIncrement: 15,
         altInput: true,
         altFormat: "d/F/Y",
         dateFormat: "Y-m-d",
-        // time_24hr: false
     }
 
     activeMenuOption(location.hash)
