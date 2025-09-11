@@ -220,11 +220,12 @@ def eliminarCargo():
     idCargo = request.form["idCargo"]
     cursor = con.cursor()
     sql    = "DELETE FROM cargo WHERE idCargo = %s"
-    val    = (idCargo)
+    val    = (idCargo,)
     cursor.execute(sql, val)
     con.commit()
     con.close()
     return make_response(jsonify({"succes": True}))
+
 
 
 
