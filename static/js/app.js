@@ -213,6 +213,29 @@ app.controller("cargoCtrl", function ($scope, $http) {
             alert("Error al eliminar: " + xhr.responseText)
         })
     })
+
+    // Editar Cargo
+    $(document).off("click", ".btn-editar").on("click", ".btn-editar", function () {
+        const id = $(this).data("idcargos")
+
+        $.get("/cargo/" + id, function (res) {
+            if (res && res.length) {
+                const c = res[0]
+
+                // Rellenar el formulario con los datos del registro
+                $("#idCargos").val(c.idCargos)
+                $("#descripcion").val(c.descripcion)
+                $("#monto").val(c.monto)
+                // si la fecha viene con hora, cortamos para input date
+                $("#fecha").val(c.fecha ? c.fecha.split(" ")[0] : "")
+                $("#idMascotas").val(c.idMascotas)
+            } else {
+                alert("No se encontró el registro.")
+            }
+        }).fail(function (xhr) {
+            alert("Error al obtener el cargo: " + xhr.responseText)
+        })
+    })
 })
 
 const DateTime = luxon.DateTime
@@ -230,6 +253,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
