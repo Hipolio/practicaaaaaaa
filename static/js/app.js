@@ -235,10 +235,10 @@ app.controller("cargoCtrl", function ($scope, $http) {
 
         $.post("/cargo", {
             idCargo: $("#txtidCargo").val(),
-            descripcion: $("#txtdescripcion").val(),
-            monto: $("#txtmonto").val(),
-            fecha: $("#txtfecha").val(),
-            idMascotas: $("#txtidMascotas").val(),
+            descripcion: $("#txtDescripcion").val(),
+            monto: $("#txtMonto").val(),
+            fecha: $("#txtFecha").val(),
+            idMascotas: $("#txtIdMascotas").val(),
         }, function () {
             buscarCargo();
             $("#frmCargo")[0].reset();
@@ -264,6 +264,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
