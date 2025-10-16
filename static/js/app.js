@@ -213,29 +213,40 @@ app.controller("cargoCtrl", function ($scope, $http) {
             alert("Error al eliminar: " + xhr.responseText)
         })
     })
+     // --- editar ---
+    $(document).on("click", ".btn-editar", function () {
+        const id = $(this).data("id");
 
-    // Editar Cargo
-    $(document).off("click", ".btn-editar").on("click", ".btn-editar", function () {
-        const id = $(this).data("idcargos")
-
-        $.get("/cargo/" + id, function (res) {
-            if (res && res.length) {
-                const c = res[0]
-
-                // Rellenar el formulario con los datos del registro
-                $("#idCargos").val(c.idCargos)
-                $("#descripcion").val(c.descripcion)
-                $("#monto").val(c.monto)
-                // si la fecha viene con hora, cortamos para input date
-                $("#fecha").val(c.fecha ? c.fecha.split(" ")[0] : "")
-                $("#idMascotas").val(c.idMascotas)
-            } else {
-                alert("No se encontró el registro.")
+        $.get("/cargo/" + id, function (respuesta) {
+            if (respuesta.length > 0) {
+                const cargo = respuesta[0];
+                $("#idCargo").val(cargo.idCargo);
+                $("#descripcion").val(cargo.descripcion);
+                $("#monto").val(cargo.monto);
+                $("#fecha").val(cargo.fecha);
+                $("#idMascostas").val(cargo.idMascotas);
             }
-        }).fail(function (xhr) {
-            alert("Error al obtener el cargo: " + xhr.responseText)
         })
     })
+
+    // --- guardar (insertar o actualizar) ---
+    $(document).on("submit", "#frmCargo", function (event) {
+        event.preventDefault();
+
+        $.post("/cargo", {
+            idCargo: $("#idCargo").val(),
+            descripcion: $("#descripcion").val(),
+            monto: $("#monto").val(),
+            fecha: $("#fecha").val(),
+            idMascotas: $("#idMascotas").val(),
+        }, function () {
+            buscarCargo();
+            $("#frmCargo")[0].reset();
+            $("#idCargo").val("");
+        }).fail(function(xhr) {
+            alert("Error al guardar: " + xhr.responseText);
+        });
+    });
 })
 
 const DateTime = luxon.DateTime
@@ -253,6 +264,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
