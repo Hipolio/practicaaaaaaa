@@ -204,7 +204,7 @@ def guardarCargo():
     cursor.execute(sql, val)
     con.commit()
     cursor.close()
-    return make_response(jsonify({"status": "ok"})
+    return make_response(jsonify({"status": "ok"}))
 
 @app.route("/cargo/eliminar", methods=["POST"])
 def eliminarCargo():
@@ -234,6 +234,7 @@ def obtenerCargo(idCargo):
     registros = cursor.fetchall()
     con.close()
     return make_response(jsonify(registros))
+
 
 
 
