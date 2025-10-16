@@ -234,7 +234,7 @@ app.controller("cargoCtrl", function ($scope, $http) {
         event.preventDefault();
 
         $.post("/cargo", {
-            idCargo: $("#txtidCargo").val(),
+            idCargo: "",
             descripcion: $("#txtDescripcion").val(),
             monto: $("#txtMonto").val(),
             fecha: $("#txtFecha").val(),
@@ -264,6 +264,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
