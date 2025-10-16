@@ -221,10 +221,10 @@ app.controller("cargoCtrl", function ($scope, $http) {
             if (respuesta.length > 0) {
                 const cargo = respuesta[0];
                 $("#idCargo").val(cargo.idCargo);
-                $("#descripcion").val(cargo.descripcion);
-                $("#monto").val(cargo.monto);
-                $("#fecha").val(cargo.fecha);
-                $("#idMascostas").val(cargo.idMascotas);
+                $("#txtDescripcion").val(cargo.descripcion);
+                $("#txtMonto").val(cargo.monto);
+                $("#txtFecha").val(cargo.fecha);
+                $("#txtIdMascostas").val(cargo.idMascotas);
             }
         })
     })
@@ -234,7 +234,7 @@ app.controller("cargoCtrl", function ($scope, $http) {
         event.preventDefault();
 
         $.post("/cargo", {
-            idCargo: "",
+            idCargo: $("#idCargo").val(),
             descripcion: $("#txtDescripcion").val(),
             monto: $("#txtMonto").val(),
             fecha: $("#txtFecha").val(),
@@ -264,6 +264,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
