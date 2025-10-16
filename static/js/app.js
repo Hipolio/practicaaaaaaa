@@ -229,24 +229,35 @@ app.controller("cargoCtrl", function ($scope, $http) {
         })
     })
 
-    // --- guardar (insertar o actualizar) ---
     $(document).on("submit", "#frmCargo", function (event) {
-        event.preventDefault();
+    event.preventDefault();
 
-        $.post("/cargo", {
-            idCargo: $("#idCargo").val(),
-            descripcion: $("#txtDescripcion").val(),
-            monto: $("#txtMonto").val(),
-            fecha: $("#txtFecha").val(),
-            idMascotas: $("#txtIdMascotas").val(),
-        }, function () {
-            buscarCargo();
-            $("#frmCargo")[0].reset();
-            $("#idCargo").val("");
-        }).fail(function(xhr) {
-            alert("Error al guardar: " + xhr.responseText);
-        });
+    const idCargo = $("#idCargo").val();
+    const descripcion = $("#txtDescripcion").val();
+    const monto = $("#txtMonto").val();
+    const fecha = $("#txtFecha").val();
+    const idMascotas = $("#txtIdMascota").val();
+
+    // Debug opcional:
+    console.log({ idCargo, descripcion, monto, fecha, idMascotas });
+
+    $.post("/cargo", {
+        idCargo: idCargo,
+        descripcion: descripcion,
+        monto: monto,
+        fecha: fecha,
+        idMascotas: idMascotas
+    })
+    .done(function () {
+        buscarCargo();
+        $("#frmCargo")[0].reset();
+        $("#idCargo").val("");
+    })
+    .fail(function (xhr) {
+        alert("Error al guardar: " + xhr.responseText);
     });
+});
+
 })
 
 const DateTime = luxon.DateTime
@@ -264,6 +275,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
