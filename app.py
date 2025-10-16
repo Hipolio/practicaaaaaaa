@@ -226,22 +226,22 @@ def eliminarCargo():
     con.close()
     return make_response(jsonify({"succes": True}))
 
-@app.route("/cargo/editar")
-def editarCargo(idCargo):
+@app.route("/cargo/<int:idCargo>")
+def obtenerCargo(idCargo):
     if not con.is_connected():
         con.reconnect()
 
     cursor = con.cursor(dictionary=True)
     sql = """
-    SELECT idCargo, descripcion, monto, fecha, idMascotas FROM cargo WHERE idCargo = %s
+    SELECT idCargo, descripcion, monto, fecha, idMascotas
+    FROM cargo
+    WHERE idCargo = %s
     """
-    val    = (idCargo,)
-
-    cursor.execute(sql, val)
+    cursor.execute(sql, (idCargo,))
     registros = cursor.fetchall()
     con.close()
-
     return make_response(jsonify(registros))
+
 
 
 
