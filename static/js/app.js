@@ -234,11 +234,11 @@ app.controller("cargoCtrl", function ($scope, $http) {
         event.preventDefault();
 
         $.post("/cargo", {
-            idCargo: $("#idCargo").val(),
-            descripcion: $("#descripcion").val(),
-            monto: $("#monto").val(),
-            fecha: $("#fecha").val(),
-            idMascotas: $("#idMascotas").val(),
+            idCargo: $("#txtidCargo").val(),
+            descripcion: $("#txtdescripcion").val(),
+            monto: $("#txtmonto").val(),
+            fecha: $("#txtfecha").val(),
+            idMascotas: $("#txtidMascotas").val(),
         }, function () {
             buscarCargo();
             $("#frmCargo")[0].reset();
@@ -264,6 +264,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
