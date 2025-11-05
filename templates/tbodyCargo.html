@@ -1,15 +1,17 @@
-{% for cargo in cargo %}
+{% for minisplit in minisplits %}
 <tr>
-    <td>{{ cargo.idCargo }}</td>
-    <td>{{ cargo.descripcion }}</td>
-    <td>{{ cargo.monto }}</td>
-    <td>{{ cargo.fecha }}</td>
-    <td>{{ cargo.idMascotas }}</td>
-    <td>
-        <button class="btn btn-danger btn-editar" data-id="{{ cargo.idCargo }}">Editar</button>
-    </td>
-    <td>
-        <button class="btn btn-info btn-eliminar" data-idCargo="{{ cargo.idCargo }}">Eliminar</button>
-    </td>
+  <td>{{ minisplit.idMinisplit }}</td>
+  <td>{{ minisplit.modelo }}</td>
+  <td>{{ minisplit.marca }}</td>
+  <td>{{ minisplit.capacidad }} BTU</td>
+  <td>${{ minisplit.precio }}</td>
+  <td>{{ minisplit.eficiencia }}</td>
+  <td>{{ minisplit.disponibilidad }}</td>
+  <td>
+    <button class="btn btn-info btn-editar" data-idMinisplit="{{ minisplit.idMinisplit }}">Editar</button>
+  </td>
+  <td>
+    <button class="btn btn-danger btn-eliminar" data-idMinisplit="{{ minisplit.idMinisplit }}">Eliminar</button>
+  </td>
 </tr>
 {% endfor %}
