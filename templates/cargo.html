@@ -70,17 +70,46 @@
 
     <!-- Catálogo tipo grid -->
     <div class="row g-4">
-      {% for minisplit in minisplits %}
+      <!-- 👇 Datos de ejemplo visibles -->
       <div class="col-6 col-md-4 col-lg-3">
         <div class="producto-card">
-          <img src="{{ minisplit.imagen or 'https://via.placeholder.com/300x200?text=Minisplit' }}" alt="{{ minisplit.modelo }}">
-          <h5>{{ minisplit.marca }} {{ minisplit.modelo }}</h5>
-          <p>{{ minisplit.capacidad }} BTU</p>
-          <p class="fw-bold text-primary">${{ minisplit.precio }}</p>
-          <button class="btn btn-info btn-sm" data-idMinisplit="{{ minisplit.idMinisplit }}">Más info</button>
+          <img src="https://cdn.tcl.com/media/catalog/product/cache/fadc7b7075080e44288ea05e3c47cd49/t/c/tcl-tac12c-1.jpg" alt="TCL 12000 BTU">
+          <h5>TCL - TAC-12C</h5>
+          <p>12,000 BTU</p>
+          <p class="fw-bold text-primary">$7,499</p>
+          <button class="btn btn-info btn-sm">Más info</button>
         </div>
       </div>
-      {% endfor %}
+
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="producto-card">
+          <img src="https://midea.cl/wp-content/uploads/2022/07/aireacondicionado.jpg" alt="Midea 18000 BTU">
+          <h5>Midea - CoolPro 18</h5>
+          <p>18,000 BTU</p>
+          <p class="fw-bold text-primary">$9,200</p>
+          <button class="btn btn-info btn-sm">Más info</button>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="producto-card">
+          <img src="https://electrolux.com.mx/media/catalog/product/cache/6dfebbd7149ee3d0a1b03a0f9c4ff086/m/i/minisplit-1-tonelada-frio-calor-electrolux.jpg" alt="Electrolux 12000 BTU">
+          <h5>Electrolux - Comfort12</h5>
+          <p>12,000 BTU</p>
+          <p class="fw-bold text-primary">$8,899</p>
+          <button class="btn btn-info btn-sm">Más info</button>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="producto-card">
+          <img src="https://audiotec.com.mx/wp-content/uploads/2023/02/minisplit-lg.jpg" alt="LG Inverter 24000 BTU">
+          <h5>LG - Inverter24</h5>
+          <p>24,000 BTU</p>
+          <p class="fw-bold text-primary">$12,499</p>
+          <button class="btn btn-info btn-sm">Más info</button>
+        </div>
+      </div>
     </div>
   </div>
 
