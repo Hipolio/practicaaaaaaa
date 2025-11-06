@@ -1,17 +1,21 @@
 {% for minisplit in minisplits %}
-<tr>
-  <td>{{ minisplit.idMinisplit }}</td>
-  <td>{{ minisplit.modelo }}</td>
-  <td>{{ minisplit.marca }}</td>
-  <td>{{ minisplit.capacidad }} BTU</td>
-  <td>${{ minisplit.precio }}</td>
-  <td>{{ minisplit.eficiencia }}</td>
-  <td>{{ minisplit.disponibilidad }}</td>
-  <td>
-    <button class="btn btn-info btn-editar" data-idMinisplit="{{ minisplit.idMinisplit }}">Editar</button>
+<tr style="background-color: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 10px;">
+  <td style="padding: 15px; text-align: center;">
+    <img src="{{ minisplit.imagen or 'https://via.placeholder.com/120x80?text=Minisplit' }}" alt="Imagen de minisplit"
+         style="width: 120px; height: 80px; object-fit: contain; border-radius: 8px;">
   </td>
-  <td>
-    <button class="btn btn-danger btn-eliminar" data-idMinisplit="{{ minisplit.idMinisplit }}">Eliminar</button>
+  <td style="font-weight: 600; color: #333; text-align: center;">
+    {{ minisplit.marca }} {{ minisplit.modelo }}
   </td>
-</tr>
-{% endfor %}
+  <td style="color: #555; text-align: center;">{{ minisplit.capacidad }} BTU</td>
+  <td style="font-weight: 600; color: #0d6efd; text-align: center;">${{ minisplit.precio }}</td>
+  <td style="color: #777; text-align: center;">{{ minisplit.eficiencia }}</td>
+  <td style="text-align: center;">
+    {% if minisplit.disponibilidad == "Disponible" %}
+      <span style="color: #198754; font-weight: 600;">Disponible</span>
+    {% else %}
+      <span style="color: #dc3545; font-weight: 600;">Agotado</span>
+    {% endif %}
+  </td>
+  <td style="text-align: center;">
+    <button class="btn btn-sm btn-outline-primary btn-ed
