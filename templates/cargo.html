@@ -7,110 +7,77 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      background-color: #f5f7fa;
+      background-color: #f8f9fa;
       font-family: 'Poppins', sans-serif;
     }
     .catalogo-container {
       max-width: 1100px;
       margin: 40px auto;
     }
-    .card {
-      border: none;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    h1 {
+      font-weight: 600;
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .producto-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      text-align: center;
+      padding: 15px;
       transition: all 0.3s ease;
     }
-    .card:hover {
+    .producto-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
     }
-    .card-title {
+    .producto-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .producto-card h5 {
+      font-size: 1rem;
+      color: #333;
       font-weight: 600;
-      color: #2a2a2a;
+      margin-bottom: 8px;
     }
-    .precio {
-      font-size: 1.2rem;
-      color: #0d6efd;
-      font-weight: bold;
+    .producto-card p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 5px;
     }
-    .disponible {
-      color: #198754;
-      font-weight: 600;
+    .btn-info {
+      background-color: #ff7043;
+      border: none;
+      color: white;
+      font-weight: 500;
+      border-radius: 6px;
+      padding: 8px 16px;
+      transition: background 0.3s;
     }
-    .agotado {
-      color: #dc3545;
-      font-weight: 600;
-    }
-    .formulario {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    .btn-info:hover {
+      background-color: #ff5722;
     }
   </style>
 </head>
 <body>
   <div class="container catalogo-container">
-    <h1 class="text-center mb-4 text-primary">Catálogo de Minisplits</h1>
+    <h1>Catálogo de Minisplits</h1>
 
-    <!-- Formulario de registro -->
-    <div class="formulario mb-5">
-      <h5 class="mb-3">Agregar / Editar Minisplit</h5>
-      <form id="frmMinisplit" method="post">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label for="txtModelo" class="form-label">Modelo</label>
-            <input type="text" class="form-control" id="txtModelo" name="txtModelo" required>
-          </div>
-          <div class="col-md-6">
-            <label for="txtMarca" class="form-label">Marca</label>
-            <input type="text" class="form-control" id="txtMarca" name="txtMarca" required>
-          </div>
-          <div class="col-md-4">
-            <label for="txtCapacidad" class="form-label">Capacidad (BTU)</label>
-            <input type="number" class="form-control" id="txtCapacidad" name="txtCapacidad" required>
-          </div>
-          <div class="col-md-4">
-            <label for="txtPrecio" class="form-label">Precio ($MXN)</label>
-            <input type="number" class="form-control" id="txtPrecio" name="txtPrecio" step="0.01" required>
-          </div>
-          <div class="col-md-4">
-            <label for="txtEficiencia" class="form-label">Eficiencia Energética</label>
-            <input type="text" class="form-control" id="txtEficiencia" name="txtEficiencia">
-          </div>
-          <div class="col-md-6">
-            <label for="txtDisponibilidad" class="form-label">Disponibilidad</label>
-            <select class="form-select" id="txtDisponibilidad" name="txtDisponibilidad">
-              <option value="Disponible">Disponible</option>
-              <option value="Agotado">Agotado</option>
-            </select>
-          </div>
-          <div class="col-12 text-end">
-            <button class="btn btn-primary px-4">Guardar</button>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <!-- Catálogo visual -->
-    <div class="row" id="catalogoMinisplits">
+    <!-- Catálogo tipo grid -->
+    <div class="row g-4">
       {% for minisplit in minisplits %}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100">
-          <img src="{{ minisplit.imagen or 'https://via.placeholder.com/300x200?text=Minisplit' }}" class="card-img-top" alt="Minisplit">
-          <div class="card-body">
-            <h5 class="card-title">{{ minisplit.marca }} - {{ minisplit.modelo }}</h5>
-            <p class="mb-1"><strong>Capacidad:</strong> {{ minisplit.capacidad }} BTU</p>
-            <p class="mb-1"><strong>Eficiencia:</strong> {{ minisplit.eficiencia }}</p>
-            <p class="precio"> ${{ minisplit.precio }}</p>
-            <p class="{% if minisplit.disponibilidad == 'Disponible' %}disponible{% else %}agotado{% endif %}">
-              {{ minisplit.disponibilidad }}
-            </p>
-          </div>
-          <div class="card-footer bg-transparent border-0 text-center">
-            <button class="btn btn-outline-primary btn-sm btn-editar" data-idMinisplit="{{ minisplit.idMinisplit }}">Editar</button>
-            <button class="btn btn-outline-danger btn-sm btn-eliminar" data-idMinisplit="{{ minisplit.idMinisplit }}">Eliminar</button>
-          </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="producto-card">
+          <img src="{{ minisplit.imagen or 'https://via.placeholder.com/300x200?text=Minisplit' }}" alt="{{ minisplit.modelo }}">
+          <h5>{{ minisplit.marca }} {{ minisplit.modelo }}</h5>
+          <p>{{ minisplit.capacidad }} BTU</p>
+          <p class="fw-bold text-primary">${{ minisplit.precio }}</p>
+          <button class="btn btn-info btn-sm" data-idMinisplit="{{ minisplit.idMinisplit }}">Más info</button>
         </div>
       </div>
       {% endfor %}
